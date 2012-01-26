@@ -9,7 +9,7 @@ Released under GPL yada yada.
 Usage
 -----
 
-$ docblock myfile.txt
+$ docblock < myfile.txt
 
 Input file should be plain text, with double linebreaks to mark paragraphs and no linebreaks elsewhere.
 

@@ -15,7 +15,7 @@ $\ = "\n";
 
 # Enable localized slurp mode to read in given file(s).
 local $/;
-my $text = <>;
+my $text = <STDIN>;
 
 # Grab as much as we can for a line, not breaking words,
 # but don't take a newline or a space at the end.
