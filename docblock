@@ -28,6 +28,8 @@ my $offset = $line_length - length($line_start);
 
 # Add the line start string.
 map { s/^/ * / } @lines;
+# Strip whitespace at the end of lines.
+map { s/\s+$// } @lines;
 
 # Output.
 print join $\, @lines;
