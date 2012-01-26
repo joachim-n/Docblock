@@ -1,0 +1,35 @@
+#!/usr/bin/perl
+
+# Converts plain text to documentation formatted lines, with initial characters
+# and wrapped to 80 characters. Paragraph breaks are preserved.
+# by Joachim Noreiko.
+# Released under GPL yada yada.
+
+use warnings;
+
+# Configuration: what goes at the start of the lines.
+my $line_start = q[ * ]; # PHD DocBlock.
+my $line_length = 80;
+
+$\ = "\n";
+
+# Enable localized slurp mode to read in given file(s).
+local $/;
+my $text = <>;
+
+# Grab as much as we can for a line, not breaking words,
+# but don't take a newline or a space at the end.
+my $offset = $line_length - length($line_start);
+@lines = $text =~ m/(.{0,$offset})(?: |\n)/g;
+
+# Debug.
+#use Data::Dumper;
+#print Dumper(@lines);
+
+# Add the line start string.
+map { s/^/ * / } @lines;
+
+# Output.
+print join $\, @lines;
+
+
