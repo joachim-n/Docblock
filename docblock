@@ -35,7 +35,7 @@ my $offset = $line_length - length($line_start);
 #print Dumper(@lines);
 
 # Add the line start string.
-map { s/^/ * / } @lines;
+map { s/^/$line_start/ } @lines;
 # Strip whitespace at the end of lines.
 map { s/\s+$// } @lines;
 
