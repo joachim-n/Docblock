@@ -17,6 +17,14 @@ $\ = "\n";
 local $/;
 my $text = <STDIN>;
 
+# Remove the line start (optionally trimmed) from incoming text.
+(my $line_start_trimmed = $line_start) =~ s/\s$//;
+$text =~ s[^\Q$line_start\E][]gm;
+$text =~ s[^\Q$line_start_trimmed\E][]gm;
+
+# Join together single line breaks, making sure to preserve/add a space between words.
+$text =~ s/(?<=[^\n]) *\n(?=[^\n])/ /g;
+
 # Grab as much as we can for a line, not breaking words,
 # but don't take a newline or a space at the end.
 my $offset = $line_length - length($line_start);
