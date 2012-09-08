@@ -60,7 +60,6 @@ while ($text) {
   if ($extract =~ /^-/) {
     $current_offset += 2;
     $indent = 1;
-    print $indent;
   }
 }
 
