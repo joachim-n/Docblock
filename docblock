@@ -22,8 +22,14 @@ my $text = <STDIN>;
 $text =~ s[^\Q$line_start\E][]gm;
 $text =~ s[^\Q$line_start_trimmed\E][]gm;
 
-# Join together single line breaks, making sure to preserve/add a space between words.
-$text =~ s/(?<=[^\n]) *\n(?=[^\n])/ /g;
+# Join up paragraphs. A single line break, that doesn't have a bullet point on
+# the next line, is removed, making sure to preserve/add a space between words.
+$text =~ s/
+  (?<=[^\n])  # lookbehind: not a newline
+  \ *\n       # optional space and then the newline we grab.
+  (?=[^ \n ]) # lookahead: not another newline.
+  (?!\s*-)    # lookahead: not a bullet, optionally indented.
+  /\ /gx;
 
 # Grab as much as we can for a line, not breaking words,
 # but don't take a newline or a space at the end.
