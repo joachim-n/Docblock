@@ -34,19 +34,35 @@ $text =~ s/
 # Grab as much as we can for a line, not breaking words,
 # but don't take a newline or a space at the end.
 my $offset = $line_length - length($line_start);
+my $current_offset = $offset;
 my @lines;
+my $indent = 0;
 while ($text) {
   # Extract a line's worth of text.
-  $text =~ s[(.{0,$offset})(?: |\n|\Z)]{
+  $text =~ s[(.{0,$current_offset})(?: |\n|\Z)]{
     # Extract the capture.
     $extract = $1;
     # Return an empty string to be the replacement.
     '';
   }e;
-  push @lines, $extract;
-}
 
-@lines = $text =~ m/(.{0,$offset})(?: |\n)/g;
+  # If the current extracted line has a bullet or is blank, clear any indent.
+  if ($extract =~ /^-/ || $extract eq '') {
+    $current_offset = $offset;
+    $indent = 0;
+  }
+
+  $indented_extract = (' ' x ($indent * 2))  . $extract;
+
+  push @lines, $indented_extract;
+
+  # If the current extracted line has a bullet, set the indent for the next line.
+  if ($extract =~ /^-/) {
+    $current_offset += 2;
+    $indent = 1;
+    print $indent;
+  }
+}
 
 # Debug.
 #use Data::Dumper;
